@@ -6,4 +6,3 @@ class MBTI():
         self.DataUnit=DataUnit(self)
 
 
-
