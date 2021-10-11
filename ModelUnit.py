@@ -17,8 +17,8 @@ class ModelUnit():
     def __init__(self,MBTI):
         self.MBTI=MBTI
         self.DataUnit=MBTI.DataUnit
+        self.MAX_LEN = 894
         self.model= self.create_model()
-        self.MAX_LEN = 894 
         self.training_history= None
         self.NB_EPOCHS = 5
         self.BATCH_SIZE = 32
@@ -45,22 +45,23 @@ class ModelUnit():
         return precision
 
     def create_model(self): 
-        input_word_ids = tf.keras.layers.Input(shape=(self.MAX_LEN,), dtype=tf.int32,
-                                               name="input_word_ids")
+        input_word_ids = tf.keras.layers.Input(shape=(self.MAX_LEN,), dtype=tf.int32, name="input_word_ids")
         bert_layer = transformers.TFBertModel.from_pretrained('bert-large-uncased')
         bert_outputs = bert_layer(input_word_ids)[0]
         pred = tf.keras.layers.Dense(16, activation='softmax')(bert_outputs[:,0,:])
         
         model = tf.keras.models.Model(inputs=input_word_ids, outputs=pred)
-        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+        #loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
         model.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.Adam(
         learning_rate=0.00002), metrics=['accuracy', self.f1_m, self.precision_m, self.recall_m])
         return model
     
     def train_model(self):
         self.training_history=self.model.fit(np.array(self.DataUnit.tokens),
-                  self.data.one_hot_labels, verbose = 1, epochs = self.NB_EPOCHS, 
-                  batch_size = self.BATCH_SIZE,  
+        tf.keras.utils.to_categorical(self.DataUnit.data.iloc[:,0], num_classes=16), 
+        verbose = 1, epochs = self.NB_EPOCHS,  batch_size = self.BATCH_SIZE,  
                   callbacks = [tf.keras.callbacks.EarlyStopping(patience = 5)])
+        with open(str(datetime.now())+'trainig_history.pkl', 'wb') as f1:
+                pickle.dump(self.training_history, f1)
         with open(str(datetime.now())+'model.pkl', 'wb') as f2:
-                pickle.dump(self.tokens, f2)
+                pickle.dump(self.training_history, f2)

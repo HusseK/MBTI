@@ -1,8 +1,4 @@
 from MBTI import MBTI
-import pickle
-from imblearn.over_sampling import SMOTE
-from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LogisticRegression
 
 MBTI=MBTI()
     
@@ -13,6 +9,8 @@ else:
     MBTI.DataUnit.data=MBTI.DataUnit.pdata
     
 MBTI.DataUnit.tokenize_and_create_attention_masks()
+
+MBTI.ModelUnit.train_model()
     
 #MBTI.DataUnit.lematize_with_pos()
 

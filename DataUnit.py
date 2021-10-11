@@ -24,9 +24,8 @@ from autocorrect import Speller
 from gensim.models import word2vec
 from sklearn.preprocessing import LabelEncoder
 from keras.preprocessing.sequence import pad_sequences
-from sklearn.model_selection import train_test_split, StratifiedKFold, cross_val_score
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline, Pipeline
-from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer, accuracy_score, f1_score
 
 

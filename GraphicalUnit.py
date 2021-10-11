@@ -8,14 +8,8 @@ Created on Thu Sep 30 14:03:45 2021
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import  Counter
-import numpy as np
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import CountVectorizer
-
-from nltk.stem import WordNetLemmatizer,PorterStemmer
-from nltk.tokenize import word_tokenize
-from wordcloud import WordCloud, STOPWORDS
-import nltk
 
 
 
